@@ -1,0 +1,23 @@
+name: getx_template
+version: 1.0.0+1
+publish_to: none
+description: getx_template
+environment: 
+  sdk: '>=3.0.5 <4.0.0'
+
+dependencies: 
+  cupertino_icons: ^1.0.2
+  get: 4.6.5
+  get_storage: ^2.1.1
+  tdesign_flutter: ^0.1.0
+  flutter:
+    sdk: flutter
+
+dev_dependencies: 
+  flutter_lints: ^2.0.0
+  flutter_test: 
+    sdk: flutter
+
+flutter: 
+  uses-material-design: true
+
