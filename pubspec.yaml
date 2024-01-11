@@ -11,6 +11,7 @@ dependencies:
   get_storage: ^2.1.1
   tdesign_flutter: ^0.1.0
   json_annotation: ^4.8.1
+  talker_flutter: ^3.6.0
   flutter:
     sdk: flutter
 
