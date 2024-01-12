@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:getx_template/app/utils/log.dart';
 import 'package:getx_template/services/global.dart';
-import 'package:talker_flutter/talker_flutter.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
 import 'app/routes/app_pages.dart';
@@ -13,8 +12,29 @@ Future<void> main() async {
   await initServices();
   await GetStorage.init();
   runApp(
-    GetMaterialApp(
-      title: "Application",
+    ScreenUtilInit(
+      designSize: const Size(1920, 1080),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, child) {
+        // 设置字体不跟随系统字体大小进行改变
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+          child: const MainApp(),
+        );
+      },
+    ),
+  );
+}
+
+class MainApp extends StatelessWidget {
+  const MainApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: "getx_template",
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
       theme: ThemeData(
@@ -23,8 +43,8 @@ Future<void> main() async {
           seedColor: TDTheme.defaultData().brandClickColor,
         ),
       ),
-    ),
-  );
+    );
+  }
 }
 
 Future<void> initServices() async {
