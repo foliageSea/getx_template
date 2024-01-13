@@ -3,12 +3,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:getx_template/data/objectbox.dart';
 import 'package:getx_template/services/global.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
 import 'app/routes/app_pages.dart';
 
+
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await initServices();
   await GetStorage.init();
   runApp(
@@ -49,8 +52,9 @@ class MainApp extends StatelessWidget {
 
 Future<void> initServices() async {
   try {
+    objectbox = await ObjectBox.create();
     await Get.putAsync(() => GlobalService().init());
   } catch (e, st) {
-    debugPrintStack(stackTrace: st, label: "initServices Error");
+    debugPrintStack(stackTrace: st, label: "⚡$e");
   }
 }
