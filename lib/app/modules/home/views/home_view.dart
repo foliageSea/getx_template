@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:get/get.dart';
 import 'package:getx_template/app/utils/log.dart';
 import 'package:talker_flutter/talker_flutter.dart';
+import 'package:tdesign_flutter/tdesign_flutter.dart';
 
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,20 +27,11 @@ class HomeView extends GetView<HomeController> {
         ],
       ),
       body: Center(
-        child: Container(
-          width: 500.w,
-          height: 500.h,
-          color: Colors.redAccent,
-          child: Center(
-            child: Text(
-              "测试",
-              style: TextStyle(
-                fontSize: 60.sp,
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
+        child: FilledButton(
+          onPressed: () {
+            TDToast.showText("测试", context: context);
+          },
+          child: const Text("测试"),
         ),
       ),
     );
