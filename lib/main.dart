@@ -2,26 +2,43 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:getx_template/app/interface/platform_init.dart';
+import 'package:getx_template/app/interface/platform_init_android.dart';
 import 'package:getx_template/app/utils/log.dart';
 import 'package:getx_template/data/objectbox.dart';
 import 'package:getx_template/services/global.dart';
+import 'package:getx_template/services/update.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
 import 'app/routes/app_pages.dart';
 
 Future<void> main() async {
+  // Flutter 引擎初始化
   WidgetsFlutterBinding.ensureInitialized();
+  await initPlatform();
   await initServices();
   await GetStorage.init();
   runApp(const MainApp());
 }
 
+/// Services 初始化
 Future<void> initServices() async {
   try {
     objectBox = await ObjectBox.create();
     await Get.putAsync(() => GlobalService().init());
+    await Get.putAsync(() => UpdateService().init());
   } catch (e, st) {
     talker.error("initServices Error", e, st);
+  }
+}
+
+/// Platform 初始化
+Future<void> initPlatform() async {
+  try {
+    PlatformInit platformInit = PlatformInitAndroid();
+    await platformInit.init();
+  } catch (e, st) {
+    talker.error("initPlatform Error", e, st);
   }
 }
 
