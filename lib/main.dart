@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -5,16 +7,29 @@ import 'package:get_storage/get_storage.dart';
 import 'package:getx_template/app/interface/platform_init.dart';
 import 'package:getx_template/app/interface/platform_init_android.dart';
 import 'package:getx_template/app/utils/log.dart';
-import 'package:getx_template/data/objectbox.dart';
 import 'package:getx_template/services/global.dart';
 import 'package:getx_template/services/update.dart';
+import 'package:isar/isar.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
 import 'app/routes/app_pages.dart';
+import 'data/models/user.dart';
+
+late Isar isar;
 
 Future<void> main() async {
   // Flutter 引擎初始化
   WidgetsFlutterBinding.ensureInitialized();
+  final dir = await getApplicationDocumentsDirectory();
+  log("Isar $dir");
+
+  isar = await Isar.open(
+    [UserSchema],
+    directory: dir.path,
+    name: 'getx_template_db',
+  );
+
   await initPlatform();
   await initServices();
   await GetStorage.init();
@@ -24,7 +39,6 @@ Future<void> main() async {
 /// Services 初始化
 Future<void> initServices() async {
   try {
-    objectBox = await ObjectBox.create();
     await Get.putAsync(() => GlobalService().init());
     await Get.putAsync(() => UpdateService().init());
   } catch (e, st) {

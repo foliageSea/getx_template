@@ -27,11 +27,28 @@ class HomeView extends GetView<HomeController> {
         ],
       ),
       body: Center(
-        child: FilledButton(
-          onPressed: () {
-            TDToast.showText("测试", context: context);
-          },
-          child: const Text("测试"),
+        child: Column(
+          children: [
+            FilledButton(
+              onPressed: () {
+                // TDToast.showText("测试", context: context);
+
+                controller.addUser();
+              },
+              child: const Text("新增"),
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            FilledButton(
+              onPressed: () {
+                // TDToast.showText("测试", context: context);
+
+                controller.getAllUser();
+              },
+              child: const Text("读取"),
+            ),
+          ],
         ),
       ),
     );
