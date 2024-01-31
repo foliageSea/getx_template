@@ -40,6 +40,7 @@ Future<void> initServices() async {
   }
 }
 
+/// 初始化 Isar
 Future initIsar() async {
   final dir = await getApplicationDocumentsDirectory();
   log("Isar $dir");
