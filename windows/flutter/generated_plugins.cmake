@@ -3,7 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  objectbox_flutter_libs
+  isar_flutter_libs
   share_plus
   url_launcher_windows
 )
