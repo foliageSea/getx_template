@@ -28,6 +28,7 @@ class HomeView extends GetView<HomeController> {
       ),
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             FilledButton(
               onPressed: () {
@@ -47,6 +48,17 @@ class HomeView extends GetView<HomeController> {
                 controller.getAllUser();
               },
               child: const Text("读取"),
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            FilledButton(
+              onPressed: () {
+                // TDToast.showText("测试", context: context);
+
+                controller.fetch();
+              },
+              child: const Text("请求接口"),
             ),
           ],
         ),

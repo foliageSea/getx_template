@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:getx_template/app/interface/platform_init.dart';
 import 'package:getx_template/app/interface/platform_init_android.dart';
+import 'package:getx_template/app/interface/platform_init_windows.dart';
 import 'package:getx_template/app/utils/log.dart';
 import 'package:getx_template/services/global.dart';
 import 'package:getx_template/services/update.dart';
@@ -21,14 +23,6 @@ late Isar isar;
 Future<void> main() async {
   // Flutter 引擎初始化
   WidgetsFlutterBinding.ensureInitialized();
-  final dir = await getApplicationDocumentsDirectory();
-  log("Isar $dir");
-
-  isar = await Isar.open(
-    [UserSchema],
-    directory: dir.path,
-    name: 'getx_template_db',
-  );
 
   await initPlatform();
   await initServices();
@@ -39,6 +33,7 @@ Future<void> main() async {
 /// Services 初始化
 Future<void> initServices() async {
   try {
+    await initIsar();
     await Get.putAsync(() => GlobalService().init());
     await Get.putAsync(() => UpdateService().init());
   } catch (e, st) {
@@ -46,11 +41,26 @@ Future<void> initServices() async {
   }
 }
 
+Future initIsar() async {
+  final dir = await getApplicationDocumentsDirectory();
+  log("Isar $dir");
+  isar = await Isar.open(
+    [UserSchema],
+    directory: dir.path,
+    name: 'getx_template_db',
+  );
+}
+
 /// Platform 初始化
 Future<void> initPlatform() async {
   try {
-    PlatformInit platformInit = PlatformInitAndroid();
-    await platformInit.init();
+    PlatformInit? platformInit;
+    if (Platform.isAndroid) {
+      platformInit = PlatformInitAndroid();
+    } else if (Platform.isWindows) {
+      platformInit = PlatformInitWindows();
+    }
+    await platformInit?.init();
   } catch (e, st) {
     talker.error("initPlatform Error", e, st);
   }

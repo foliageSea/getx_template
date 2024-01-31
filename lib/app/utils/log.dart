@@ -16,7 +16,7 @@ class CustomTalkerObserver extends TalkerObserver {
   }
 
   @override
-  void onLog(TalkerDataInterface log) {
+  void onLog(TalkerData log) {
     /// Send log message to Grafana or backend
     super.onLog(log);
   }
