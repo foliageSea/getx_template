@@ -23,10 +23,9 @@ late Isar isar;
 Future<void> main() async {
   // Flutter 引擎初始化
   WidgetsFlutterBinding.ensureInitialized();
-
+  await GetStorage.init();
   await initPlatform();
   await initServices();
-  await GetStorage.init();
   runApp(const MainApp());
 }
 
