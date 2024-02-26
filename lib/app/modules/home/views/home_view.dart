@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getx_template/app/utils/log.dart';
 import 'package:talker_flutter/talker_flutter.dart';
-import 'package:tdesign_flutter/tdesign_flutter.dart';
 
 import '../controllers/home_controller.dart';
 

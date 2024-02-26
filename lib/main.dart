@@ -1,16 +1,11 @@
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:getx_template/app/interface/platform_init.dart';
-import 'package:getx_template/app/interface/platform_init_android.dart';
-import 'package:getx_template/app/interface/platform_init_windows.dart';
 import 'package:getx_template/app/utils/log.dart';
 import 'package:getx_template/services/global.dart';
-import 'package:getx_template/services/update.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
@@ -24,7 +19,6 @@ Future<void> main() async {
   // Flutter 引擎初始化
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
-  await initPlatform();
   await initServices();
   runApp(const MainApp());
 }
@@ -34,7 +28,6 @@ Future<void> initServices() async {
   try {
     await initIsar();
     await Get.putAsync(() => GlobalService().init());
-    await Get.putAsync(() => UpdateService().init());
   } catch (e, st) {
     talker.error("initServices Error", e, st);
   }
@@ -42,27 +35,16 @@ Future<void> initServices() async {
 
 /// 初始化 Isar
 Future initIsar() async {
-  final dir = await getApplicationDocumentsDirectory();
-  log("Isar $dir");
-  isar = await Isar.open(
-    [UserSchema],
-    directory: dir.path,
-    name: 'getx_template_db',
-  );
-}
-
-/// Platform 初始化
-Future<void> initPlatform() async {
   try {
-    PlatformInit? platformInit;
-    if (Platform.isAndroid) {
-      platformInit = PlatformInitAndroid();
-    } else if (Platform.isWindows) {
-      platformInit = PlatformInitWindows();
-    }
-    await platformInit?.init();
+    final dir = await getApplicationDocumentsDirectory();
+    log("Isar $dir");
+    isar = await Isar.open(
+      [UserSchema],
+      directory: dir.path,
+      name: 'getx_template_db',
+    );
   } catch (e, st) {
-    talker.error("initPlatform Error", e, st);
+    talker.error("initIsar Error", e, st);
   }
 }
 
