@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:getx_template/app/utils/log.dart';
+import 'package:getx_template/log/log.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
 import '../modules/home/bindings/home_binding.dart';

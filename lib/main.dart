@@ -4,16 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:getx_template/app/utils/log.dart';
+import 'package:getx_template/log/log.dart';
 import 'package:getx_template/services/global.dart';
-import 'package:isar/isar.dart';
-import 'package:path_provider/path_provider.dart';
+
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
 import 'app/routes/app_pages.dart';
-import 'data/models/user.dart';
-
-late Isar isar;
+import 'data/data.dart';
 
 Future<void> main() async {
   // Flutter 引擎初始化
@@ -30,21 +27,6 @@ Future<void> initServices() async {
     await Get.putAsync(() => GlobalService().init());
   } catch (e, st) {
     talker.error("initServices Error", e, st);
-  }
-}
-
-/// 初始化 Isar
-Future initIsar() async {
-  try {
-    final dir = await getApplicationDocumentsDirectory();
-    log("Isar $dir");
-    isar = await Isar.open(
-      [UserSchema],
-      directory: dir.path,
-      name: 'getx_template_db',
-    );
-  } catch (e, st) {
-    talker.error("initIsar Error", e, st);
   }
 }
 

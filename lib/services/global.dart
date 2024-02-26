@@ -1,8 +1,9 @@
 import 'package:get/get.dart';
 import 'package:getx_template/app/config/config.dart';
+import 'package:getx_template/app/config/default_global_config.dart';
 import 'package:getx_template/app/constants/storage_key.dart';
 import 'package:getx_template/app/utils/local_storage.dart';
-import 'package:getx_template/app/utils/log.dart';
+import 'package:getx_template/log/log.dart';
 
 class GlobalService extends GetxService {
   Rx<GlobalConfig> globalConfig = GlobalConfig().obs;
@@ -16,17 +17,13 @@ class GlobalService extends GetxService {
         var config = GlobalConfig.fromJson(result);
         globalConfig.value = config;
       } else {
-        var config = GlobalConfig(
-          version: '1.0.0',
-          themeColor: '#fff',
-          darkMode: false,
-        );
-        globalConfig.value = config;
-        LocalStorage.write(StorageKey.globalConfig, config.toJson());
+        globalConfig.value = defaultGlobalConfig;
+        LocalStorage.write(
+            StorageKey.globalConfig, defaultGlobalConfig.toJson());
       }
       globalConfig.refresh();
     } catch (e, st) {
-      talker.error("initGlobalConfig Error", e, st);
+      talker.error("[GlobalService] init GlobalConfig Error", e, st);
     }
   }
 
@@ -39,17 +36,12 @@ class GlobalService extends GetxService {
     try {
       await initGlobalConfig();
     } catch (e, st) {
-      talker.error("initGlobalService Error", e, st);
+      talker.error("[GlobalService] ini tGlobalService Error", e, st);
     }
   }
 
   Future<GlobalService> init() async {
-    try {
-      await initGlobalService();
-    } catch (e, st) {
-      talker.error("initGlobalService Error", e, st);
-    }
-
+    await initGlobalService();
     return this;
   }
 }

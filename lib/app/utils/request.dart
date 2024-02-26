@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:talker_dio_logger/talker_dio_logger_interceptor.dart';
 import 'package:talker_dio_logger/talker_dio_logger_settings.dart';
 
-import 'log.dart';
+import '../../log/log.dart';
 
 /// 网络请求单例类
 class Request {
