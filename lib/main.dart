@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:getx_template/log/log.dart';
 import 'package:getx_template/services/global.dart';
+import 'package:getx_template/utils/miru_directory.dart';
 
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
@@ -24,6 +25,9 @@ Future<void> main() async {
 Future<void> initServices() async {
   try {
     await initIsar();
+
+    MiruDirectory.ensureInitialized();
+
     await Get.putAsync(() => GlobalService().init());
   } catch (e, st) {
     talker.error("initServices Error", e, st);

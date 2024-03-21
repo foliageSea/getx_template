@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getx_template/log/log.dart';
+import 'package:getx_template/utils/miru_directory.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
 import '../controllers/home_controller.dart';
@@ -25,8 +28,13 @@ class HomeView extends GetView<HomeController> {
           )
         ],
       ),
-      body: const Center(
-        child: Text("测试"),
+      body: Center(
+        child: FilledButton(
+            onPressed: () {
+              log(MiruDirectory.getCacheDirectory);
+              log(MiruDirectory.getDirectory);
+            },
+            child: const Text("测试")),
       ),
     );
   }
