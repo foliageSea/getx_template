@@ -1,31 +1,35 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:getx_template/log/log.dart';
 import 'package:getx_template/services/global.dart';
 import 'package:getx_template/utils/miru_directory.dart';
+import 'package:getx_template/utils/miru_storage.dart';
 
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
 import 'app/routes/app_pages.dart';
-import 'data/data.dart';
 
 Future<void> main() async {
-  // Flutter 引擎初始化
-  WidgetsFlutterBinding.ensureInitialized();
-  await GetStorage.init();
-  await initServices();
-  runApp(const MainApp());
+  runZonedGuarded(() async {
+    FlutterError.onError = (FlutterErrorDetails details) {
+      talker.handle(details.exception, details.stack);
+    };
+    WidgetsFlutterBinding.ensureInitialized();
+    await MiruDirectory.ensureInitialized();
+    await MiruStorage.ensureInitialized();
+    await initServices();
+    runApp(const MainApp());
+  }, (error, stack) {
+    talker.handle(error, stack);
+  });
 }
 
 /// Services 初始化
 Future<void> initServices() async {
   try {
-    await initIsar();
-
-    MiruDirectory.ensureInitialized();
-
     await Get.putAsync(() => GlobalService().init());
   } catch (e, st) {
     talker.error("initServices Error", e, st);

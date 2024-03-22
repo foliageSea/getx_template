@@ -7,7 +7,7 @@ class MiruDirectory {
   static late final Directory _appDocDir;
   static late final Directory _cacheDir;
 
-  static ensureInitialized() async {
+  static Future ensureInitialized() async {
     _appDocDir = await getApplicationDocumentsDirectory();
     _cacheDir = await getTemporaryDirectory();
   }

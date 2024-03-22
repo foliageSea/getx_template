@@ -1,9 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getx_template/log/log.dart';
-import 'package:getx_template/utils/miru_directory.dart';
+import 'package:getx_template/services/global.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
 import '../controllers/home_controller.dart';
@@ -13,6 +11,7 @@ class HomeView extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
+    var c = Get.find<GlobalService>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('HomeView'),
@@ -29,12 +28,21 @@ class HomeView extends GetView<HomeController> {
         ],
       ),
       body: Center(
-        child: FilledButton(
-            onPressed: () {
-              log(MiruDirectory.getCacheDirectory);
-              log(MiruDirectory.getDirectory);
-            },
-            child: const Text("测试")),
+        child: Column(
+          children: [
+            Obx(() => Text(c.globalConfig.toString())),
+            const SizedBox(
+              height: 8,
+            ),
+            FilledButton(
+              onPressed: () {
+                c.globalConfig.value.version = '1.0.1';
+                c.globalConfig.refresh();
+              },
+              child: const Text('修改'),
+            ),
+          ],
+        ),
       ),
     );
   }

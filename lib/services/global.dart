@@ -1,47 +1,34 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:getx_template/app/config/config.dart';
-import 'package:getx_template/app/config/default_global_config.dart';
-import 'package:getx_template/app/constants/storage_key.dart';
-import 'package:getx_template/app/utils/local_storage.dart';
 import 'package:getx_template/log/log.dart';
+import 'package:getx_template/utils/miru_storage.dart';
 
 class GlobalService extends GetxService {
   Rx<GlobalConfig> globalConfig = GlobalConfig().obs;
 
-  /// 初始化全局配置
-  Future initGlobalConfig() async {
+  void _initConfig() {
     try {
-      var result =
-          LocalStorage.read<Map<String, dynamic>>(StorageKey.globalConfig);
-      if (result != null) {
-        var config = GlobalConfig.fromJson(result);
-        globalConfig.value = config;
-      } else {
-        globalConfig.value = defaultGlobalConfig;
-        LocalStorage.write(
-            StorageKey.globalConfig, defaultGlobalConfig.toJson());
-      }
-      globalConfig.refresh();
+      var json = jsonDecode(MiruStorage.get(StorageKey.globalConfig) as String)
+          as Map<String, dynamic>;
+      globalConfig.value = GlobalConfig.fromJson(json);
     } catch (e, st) {
-      talker.error("[GlobalService] init GlobalConfig Error", e, st);
+      talker.handle(e, st, '初始化全局配置失败');
     }
-  }
-
-  /// 更新全局配置
-  Future updateGlobalConfig() async {
-    LocalStorage.write(StorageKey.globalConfig, globalConfig.value.toJson());
-  }
-
-  Future initGlobalService() async {
-    try {
-      await initGlobalConfig();
-    } catch (e, st) {
-      talker.error("[GlobalService] ini tGlobalService Error", e, st);
-    }
+    ever(
+      globalConfig,
+      (callback) => MiruStorage.set(
+        StorageKey.globalConfig,
+        jsonEncode(
+          globalConfig.value.toJson(),
+        ),
+      ),
+    );
   }
 
   Future<GlobalService> init() async {
-    await initGlobalService();
+    _initConfig();
     return this;
   }
 }
